@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "378862575045",
+    "project_id": "indel-flutter",
+    "storage_bucket": "indel-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378862575045:android:c9cc8e71bc3dce8685ffac",
+        "android_client_info": {
+          "package_name": "com.example.indel_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6ZOpsVMlwZGKMAYM2MB3hOhftby1eiQw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
