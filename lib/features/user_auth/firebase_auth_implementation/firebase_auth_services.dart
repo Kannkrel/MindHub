@@ -68,6 +68,42 @@ class FirebaseAuthService {
     return null;
   }
 
+  Future<User?> updatePhoneNumber(BuildContext context, String phoneNumber) async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        String uid = user.uid;
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(uid)
+            .update({'numero': phoneNumber});
+        return user;
+      }
+    } catch (e) {
+      print("Error updating phone number: $e");
+      showSnackBar(context, 'Error al actualizar el número de teléfono.');
+    }
+    return null;
+  }
+
+  Future<User?> updateEmergencyNumber(BuildContext context, String emergencyNumber) async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        String uid = user.uid;
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(uid)
+            .update({'numero_emergencia': emergencyNumber});
+        return user;
+      }
+    } catch (e) {
+      print("Error updating phone number: $e");
+      showSnackBar(context, 'Error al actualizar el número de teléfono.');
+    }
+    return null;
+  }
+
   /*
 
   Future<User?> registerNumber(

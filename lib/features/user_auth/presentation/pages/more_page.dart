@@ -166,12 +166,7 @@ class MorePage extends StatelessWidget {
                 // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage()), (Route<dynamic> route) => false);
                 Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                   MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return HomePage();
-                    },
-                  ),
-                      (_) => false,
-                );
+                    builder: (BuildContext context) {return HomePage();},), (_) => false,);
               });
             },
             child: Container(

@@ -1,19 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:indel_flutter/features/user_auth/firebase_auth_implementation/firebase_auth_services.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/reg_emergency_page.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/finish_account_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/start_diag_page.dart';
 
 import 'menu_page.dart';
 
-class RegNumberPage extends StatefulWidget {
-  const RegNumberPage({super.key});
+class RegEmergencyPage extends StatefulWidget {
+  const RegEmergencyPage({super.key});
 
   @override
-  State<RegNumberPage> createState() => _RegNumberPageState();
+  State<RegEmergencyPage> createState() => _RegNumberPageState();
 }
 
-class _RegNumberPageState extends State<RegNumberPage> {
+class _RegNumberPageState extends State<RegEmergencyPage> {
   bool _isSigningUp = false;
   final FirebaseAuthService _auth = FirebaseAuthService();
   TextEditingController _numberController = TextEditingController();
@@ -43,42 +43,46 @@ class _RegNumberPageState extends State<RegNumberPage> {
                 height: 100,
               ),
               Image.asset(
-                'assets/register_icon.png',
+                'assets/siren_icon.png',
                 width: 90,
                 height: 90,
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 25),
               Text(
-                "¡Tu cuenta se ha creado!",
+                "En caso de una emergencia...",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 27,
                 ),
               ),
+              SizedBox(height: 10),
               Text(
-                "Necesitamos un par de datos extra...",
+                "Ingresa el número de contacto de alguien que confíes o pueda atender tu emergencia en caso de necesitarlo.",
                 style: TextStyle(
                   fontSize: 20,
                 ),
+                textAlign: TextAlign.center,
               ),
+              /*
               SizedBox(
                 height: 80,
               ),
-              Text(
-                "Ingresa tu número de teléfono",
+               Text(
+                "Ingresa un número de emergencia.",
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                 ),
-              ),
+                textAlign: TextAlign.center,
+              ), */
               SizedBox(
-                height: 15,
+                height: 30,
               ),
               TextField(
-                controller: _numberController,
+                controller: _emergencynumberController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: 'Número de teléfono',
-                  hintText: 'Ingrese su número',
+                  labelText: 'Número de emergencia',
+                  hintText: 'Número de emergencia',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
@@ -111,14 +115,14 @@ class _RegNumberPageState extends State<RegNumberPage> {
                         _isSigningUp = true;
                       });
                       // Llama al método para actualizar el número de teléfono
-                      User? user = await _auth.updatePhoneNumber(
-                          context, _numberController.text);
+                      User? user = await _auth.updateEmergencyNumber(
+                          context, _emergencynumberController.text);
                       setState(() {
                         _isSigningUp = false;
                       });
                       if (user != null) {
                         // Usuario actualizado correctamente, navega a la siguiente página
-                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => RegEmergencyPage()), (route) => false);
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => FinishAccountPage()), (route) => false);
                       }
                     },
                     borderRadius: BorderRadius.circular(10),

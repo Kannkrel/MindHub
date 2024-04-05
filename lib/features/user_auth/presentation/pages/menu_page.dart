@@ -31,7 +31,7 @@ class MenuPage extends StatelessWidget {
         stateManagement: true,
         hideNavigationBarWhenKeyboardShows: true,
         decoration: NavBarDecoration(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(0.0),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),

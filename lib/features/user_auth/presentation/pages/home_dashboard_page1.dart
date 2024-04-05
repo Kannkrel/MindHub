@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/search_page.dart';
 
 class HomeDash1 extends StatelessWidget {
   const HomeDash1({Key? key}) : super(key: key);
@@ -93,24 +94,40 @@ class HomeDash1 extends StatelessWidget {
                         color: Color.fromRGBO(7, 185, 159, 1),
                         icon: Icons.route,
                         title: "Mis actividades",
+                        onTap: (){
+
+                        }
                       ),
                       _buildGridItem(
                         context: context,
                         color: Color.fromRGBO(7, 185, 159, 1),
                         icon: Icons.search,
                         title: "Buscar Asociados",
+                        onTap: (){
+                          try {
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SearchPage()), (route) => false);
+                          } catch (e) {
+                            print('Error al navegar a SearchPage: $e');
+                          }
+                        }
                       ),
                       _buildGridItem(
                         context: context,
                         color: Color.fromRGBO(7, 185, 159, 1),
                         icon: Icons.info,
                         title: "Acerca de",
+                          onTap: (){
+
+                          }
                       ),
                       _buildGridItem(
                         context: context,
                         color: Color.fromRGBO(7, 185, 159, 1),
                         icon: Icons.exposure_zero,
                         title: "---",
+                          onTap: (){
+
+                          }
                       ),
                     ],
                   ),
@@ -190,6 +207,8 @@ class HomeDash1 extends StatelessWidget {
     required Color color,
     required IconData icon,
     required String title,
+    required VoidCallback onTap,
+
   }) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
