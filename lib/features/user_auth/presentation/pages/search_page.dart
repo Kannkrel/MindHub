@@ -5,6 +5,7 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('SearchPage se está construyendo');
     return Scaffold(
       appBar: AppBar(
         title: Text("Buscar Psicólogos"),

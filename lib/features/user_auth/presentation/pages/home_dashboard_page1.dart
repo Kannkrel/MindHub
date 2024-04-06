@@ -104,6 +104,7 @@ class HomeDash1 extends StatelessWidget {
                         icon: Icons.search,
                         title: "Buscar Asociados",
                         onTap: (){
+                          print('onTap ejecutado para Buscar Asociados');
                           try {
                             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SearchPage()), (route) => false);
                           } catch (e) {
