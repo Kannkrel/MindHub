@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/error_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/login_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/menu_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/sign_up_page.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/chats.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class ChatsPage extends StatelessWidget {
   const ChatsPage({Key? key}) : super(key: key);
@@ -11,14 +9,14 @@ class ChatsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Conversaciones"),
+        title: const Text("Conversaciones"),
         centerTitle: true,
       ),
-      drawer:  Drawer(
+      drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Color.fromRGBO(7, 185, 159, 1),
               ),
@@ -31,22 +29,22 @@ class ChatsPage extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.archive),
-              title: Text('Archivados'),
+              leading: const Icon(Icons.archive),
+              title: const Text('Archivados'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Configuración'),
+              leading: const Icon(Icons.settings),
+              title: const Text('Configuración'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: Icon(Icons.notifications),
-              title: Text('Sin leer'),
+              leading: const Icon(Icons.notifications),
+              title: const Text('Sin leer'),
               onTap: () {
                 Navigator.pop(context);
               },
@@ -66,11 +64,15 @@ class ChatsPage extends StatelessWidget {
   Widget _buildConversationItem(BuildContext context, int index) {
     return InkWell(
       onTap: () {
-        // Acción al seleccionar una conversación
+        PersistentNavBarNavigator.pushNewScreen(
+          context,
+          screen: ChatScreen(),
+          withNavBar: false,
+        );
       },
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        padding: EdgeInsets.all(16),
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.grey.withOpacity(0.1),
           borderRadius: BorderRadius.circular(10),
@@ -78,13 +80,13 @@ class ChatsPage extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               radius: 30,
               backgroundColor: Color.fromRGBO(7, 185, 159, 1),
-              // backgroundImage: AssetImage('ruta de la imagen'),
+              backgroundImage: AssetImage('assets/user_icon_green.png'),
             ),
-            SizedBox(width: 16),
-            Expanded(
+            const SizedBox(width: 16),
+            const Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -111,21 +113,21 @@ class ChatsPage extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
+                const Text(
                   "12:34 PM",
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 14,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Container(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(7, 185, 159, 1),
+                    color: const Color.fromRGBO(7, 185, 159, 1),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Text(
+                  child: const Text(
                     "2",
                     style: TextStyle(
                       color: Colors.white,
@@ -140,10 +142,4 @@ class ChatsPage extends StatelessWidget {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: ChatsPage(),
-  ));
 }

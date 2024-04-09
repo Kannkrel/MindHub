@@ -1,9 +1,9 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/error_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/login_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/omit_diag.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/sign_up_page.dart';
 
 class StartDiag extends StatelessWidget {
   const StartDiag({super.key});
@@ -12,7 +12,7 @@ class StartDiag extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(""),
+        title: const Text(""),
         centerTitle: true,
       ),
       body: Center(
@@ -21,48 +21,40 @@ class StartDiag extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 "¡Listo!",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 45,
-                ),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 45),
               ),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
+              const SizedBox(height: 15),
+              const Text(
                 "¿Te gustaría iniciar con",
-                style: TextStyle(
-                  fontSize: 30,
-                ),
+                style: TextStyle(fontSize: 30),
               ),
-              Text(
+              const Text(
                 "tu primer diagnóstico?",
                 style: TextStyle(
                   fontSize: 30,
                 ),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               Image.asset(
                 'assets/register_icon.png',
                 width: 100,
                 height: 100,
               ),
-              SizedBox(
-                height: 40,
-              ),
-              SizedBox(
-                height: 150,
-              ),
+              const SizedBox(height: 40),
+              const SizedBox(height: 150),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-
                   InkWell(
                     onTap: () {
-                      Future.delayed(Duration(milliseconds: 100), () {
-                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => OmitDiag()), (route) => false);
+                      Future.delayed(const Duration(milliseconds: 100), () {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const OmitDiag()),
+                            (route) => false);
                       });
                     },
                     child: Container(
@@ -72,7 +64,7 @@ class StartDiag extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15),
                         color: Colors.black12,
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           "Omitir",
                           style: TextStyle(
@@ -84,20 +76,21 @@ class StartDiag extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 0,
-                  ),
+                  const SizedBox(height: 0),
                   InkWell(
                     onTap: () {
-                      Future.delayed(Duration(milliseconds: 100), () {
+                      Future.delayed(const Duration(milliseconds: 100), () {
                         FirebaseAuth.instance.signOut();
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ErrorPage()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ErrorPage()));
                       });
-                    //  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                      //  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
                     },
                     child: Ink(
                       decoration: BoxDecoration(
-                        color: Color.fromRGBO(7, 185, 159, 1),
+                        color: const Color.fromRGBO(7, 185, 159, 1),
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: InkWell(
@@ -105,14 +98,13 @@ class StartDiag extends StatelessWidget {
                         child: Container(
                           width: 85,
                           height: 85,
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               "Iniciar",
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 19,
-                              ),
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 19),
                             ),
                           ),
                         ),
@@ -121,9 +113,7 @@ class StartDiag extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 40,
-              ),
+              const SizedBox(height: 40),
             ],
           ),
         ),

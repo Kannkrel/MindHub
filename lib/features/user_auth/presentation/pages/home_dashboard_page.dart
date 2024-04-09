@@ -1,11 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/error_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/home_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/menu_page.dart';
-import 'package:restart_app/restart_app.dart';
-
-import '../../../../main.dart';
 
 class HomeDash extends StatelessWidget {
   const HomeDash({super.key});
@@ -14,7 +7,9 @@ class HomeDash extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("MindHub",),
+        title: Text(
+          "MindHub",
+        ),
         centerTitle: true,
       ),
       drawer: Drawer(
@@ -26,7 +21,8 @@ class HomeDash extends StatelessWidget {
                 margin: EdgeInsets.only(top: 50, bottom: 50),
                 padding: EdgeInsets.zero,
                 height: 10,
-                child: Text('Menú', style: TextStyle(color: Colors.white, fontSize: 20)),
+                child: Text('Menú',
+                    style: TextStyle(color: Colors.white, fontSize: 20)),
               ),
               decoration: BoxDecoration(
                 color: Color.fromRGBO(7, 185, 159, 1),
@@ -57,10 +53,11 @@ class HomeDash extends StatelessWidget {
               },
             ),
             ListTile(
-              title: const Text('Cerrar Sesión', style: TextStyle(color: Colors.red)),
-                onTap: () {
+              title: const Text('Cerrar Sesión',
+                  style: TextStyle(color: Colors.red)),
+              onTap: () {
                 //  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
-                },
+              },
             ),
           ],
         ),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/error_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/menu_page.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/What_to_do%20_in_case_of.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/actovity.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/fast_diagnostic.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/trastornos.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class ResourcesPage extends StatelessWidget {
   const ResourcesPage({Key? key}) : super(key: key);
@@ -9,25 +12,56 @@ class ResourcesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Recursos"),
+        title: const Text("Recursos"),
         centerTitle: true,
       ),
       body: ListView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         children: [
-          _buildResourceButton("Trastornos", "assets/logo.png"),
-          _buildResourceButton("¿Qué hacer en caso de...?", "assets/logo.png"),
-          _buildResourceButton("Actividades", "assets/logo.png"),
-          _buildResourceButton("Diagnósticos Rápidos", "assets/logo.png"),
+          _buildResourceButton(
+            context: context,
+            title: "Trastornos",
+            imagePath: "assets/logo.png",
+            navigatorTo: Future.value(const TrastornosPage()),
+          ),
+          _buildResourceButton(
+            context: context,
+            title: "¿Qué hacer en caso de...?",
+            imagePath: "assets/logo.png",
+            navigatorTo: Future.value(const WhatToDoInCaseOfPage()),
+          ),
+          _buildResourceButton(
+            context: context,
+            title: "Actividades",
+            imagePath: "assets/logo.png",
+            navigatorTo: Future.value(const ActivityPage()),
+          ),
+          _buildResourceButton(
+            context: context,
+            title: "Diagnósticos Rápidos",
+            imagePath: "assets/logo.png",
+            navigatorTo: Future.value(FastDiagnosticPage()),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildResourceButton(String title, String imagePath) {
+  Widget _buildResourceButton({
+    required BuildContext context,
+    required String imagePath,
+    required String title,
+    required Future navigatorTo,
+  }) {
     return InkWell(
       onTap: () {
-        // Acción al seleccionar un recurso
+        navigatorTo.then((value) {
+          PersistentNavBarNavigator.pushNewScreen(
+            context,
+            screen: value,
+            withNavBar: false,
+          );
+        });
       },
       child: Column(
         children: [

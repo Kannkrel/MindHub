@@ -1,20 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/search_page.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/add_appointment.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/my_activity.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/next_appointment.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/notifications.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/search_associated.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-class HomeDash1 extends StatelessWidget {
+class HomeDash1 extends StatefulWidget {
   const HomeDash1({Key? key}) : super(key: key);
 
+  @override
+  State<HomeDash1> createState() => _HomeDash1State();
+}
+
+class _HomeDash1State extends State<HomeDash1> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: _getUserData(),
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
+          return const Scaffold(
             body: Center(
-              child: CircularProgressIndicator(), // Muestra un indicador de carga mientras se obtiene el dato del usuario
+              child:
+                  CircularProgressIndicator(), // Muestra un indicador de carga mientras se obtiene el dato del usuario
             ),
           );
         }
@@ -27,7 +38,7 @@ class HomeDash1 extends StatelessWidget {
         }
         return Scaffold(
           appBar: AppBar(
-            title: Text("MindHub"),
+            title: const Text("MindHub"),
             centerTitle: true,
           ),
           body: Padding(
@@ -35,7 +46,7 @@ class HomeDash1 extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -43,13 +54,13 @@ class HomeDash1 extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "¡Bienvenido/a " + (snapshot.data ?? '') + "!",
-                          style: TextStyle(
+                          "¡Bienvenido/a ${snapshot.data ?? ''}!",
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
                         ),
-                        Text(
+                        const Text(
                           "¿Qué haremos hoy?",
                           // snapshot.data ?? '', // Muestra el nombre del usuario
                           style: TextStyle(
@@ -59,81 +70,74 @@ class HomeDash1 extends StatelessWidget {
                       ],
                     ),
                     IconButton(
-                      icon: Icon(Icons.notifications),
+                      icon: const Icon(Icons.notifications),
                       onPressed: () {
-                        // Acción para navegar a la página de notificaciones
+                        PersistentNavBarNavigator.pushNewScreen(
+                          context,
+                          screen: NotificationsPage(),
+                          withNavBar: false,
+                        );
                       },
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _buildFeatureContainer(
                       context: context,
-                      color: Color.fromRGBO(7, 185, 159, 1),
+                      color: const Color.fromRGBO(7, 185, 159, 1),
                       icon: Icons.calendar_month,
                       title: "Próxima sesion",
+                      navigatorTo: Future.value(const NextAppointmentPage()),
                     ),
                     _buildFeatureContainer(
                       context: context,
-                      color: Color.fromRGBO(7, 185, 159, 1),
+                      color: const Color.fromRGBO(7, 185, 159, 1),
                       icon: Icons.edit_calendar,
                       title: "Agendar cita",
+                      navigatorTo: Future.value(const AddAppointmentPage()),
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Expanded(
                   child: GridView.count(
                     crossAxisCount: 2,
                     children: [
                       _buildGridItem(
                         context: context,
-                        color: Color.fromRGBO(7, 185, 159, 1),
+                        color: const Color.fromRGBO(7, 185, 159, 1),
                         icon: Icons.route,
                         title: "Mis actividades",
-                        onTap: (){
-
-                        }
+                        navigatorTo: Future.value(const MyActivityPage()),
                       ),
                       _buildGridItem(
                         context: context,
-                        color: Color.fromRGBO(7, 185, 159, 1),
+                        color: const Color.fromRGBO(7, 185, 159, 1),
                         icon: Icons.search,
                         title: "Buscar Asociados",
-                        onTap: (){
-                          print('onTap ejecutado para Buscar Asociados');
-                          try {
-                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SearchPage()), (route) => false);
-                          } catch (e) {
-                            print('Error al navegar a SearchPage: $e');
-                          }
-                        }
+                        navigatorTo: Future.value(const SearchAssociatedPage()),
                       ),
-                      _buildGridItem(
-                        context: context,
-                        color: Color.fromRGBO(7, 185, 159, 1),
-                        icon: Icons.info,
-                        title: "Acerca de",
-                          onTap: (){
-
-                          }
-                      ),
-                      _buildGridItem(
-                        context: context,
-                        color: Color.fromRGBO(7, 185, 159, 1),
-                        icon: Icons.exposure_zero,
-                        title: "---",
-                          onTap: (){
-
-                          }
-                      ),
+                      // _buildGridItem(
+                      //   context: context,
+                      //   color: Color.fromRGBO(7, 185, 159, 1),
+                      //   icon: Icons.info,
+                      //   title: "Acerca de",
+                      //   navigatorTo: Future.value(null),
+                      // ),
+                      // _buildGridItem(
+                      //   context: context,
+                      //   color: Color.fromRGBO(7, 185, 159, 1),
+                      //   icon: Icons.exposure_zero,
+                      //   title: "---",
+                      //   navigatorTo: Future.value(null),
+                      // ),
                     ],
                   ),
                 ),
-               // SizedBox(height: 10),
+                const SizedBox(height: 10),
               ],
             ),
           ),
@@ -143,12 +147,12 @@ class HomeDash1 extends StatelessWidget {
   }
 
   Future<String> _getUserData() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final User? user = _auth.currentUser;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
     final String uid = user?.uid ?? '';
 
     final DocumentSnapshot<Map<String, dynamic>> userData =
-    await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+        await FirebaseFirestore.instance.collection('Users').doc(uid).get();
 
     if (userData.exists && userData.data()!.containsKey('nombre')) {
       return userData['nombre'] ?? '';
@@ -162,13 +166,20 @@ class HomeDash1 extends StatelessWidget {
     required Color color,
     required IconData icon,
     required String title,
+    required Future navigatorTo,
   }) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: InkWell(
           onTap: () {
-            // Logica de botón
+            navigatorTo.then((value) {
+              PersistentNavBarNavigator.pushNewScreen(
+                context,
+                screen: value,
+                withNavBar: false,
+              );
+            });
           },
           child: Container(
             width: double.infinity,
@@ -185,12 +196,12 @@ class HomeDash1 extends StatelessWidget {
                   color: Colors.white,
                   size: 30,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 15,
                   ),
@@ -208,14 +219,19 @@ class HomeDash1 extends StatelessWidget {
     required Color color,
     required IconData icon,
     required String title,
-    required VoidCallback onTap,
-
+    required Future navigatorTo,
   }) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: InkWell(
         onTap: () {
-          // Logica de botón
+          navigatorTo.then((value) {
+            PersistentNavBarNavigator.pushNewScreen(
+              context,
+              screen: value,
+              withNavBar: false,
+            );
+          });
         },
         child: Container(
           decoration: BoxDecoration(
@@ -230,15 +246,10 @@ class HomeDash1 extends StatelessWidget {
                 color: Colors.white,
                 size: 30,
               ),
-              SizedBox(
-                height: 5,
-              ),
+              const SizedBox(height: 5),
               Text(
                 title,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                ),
+                style: const TextStyle(color: Colors.white, fontSize: 15),
               ),
             ],
           ),
@@ -246,10 +257,4 @@ class HomeDash1 extends StatelessWidget {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: HomeDash1(),
-  ));
 }

@@ -1,10 +1,10 @@
+// ignore_for_file: avoid_print, use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:indel_flutter/features/user_auth/firebase_auth_implementation/firebase_auth_services.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/error_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/menu_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/sign_up_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/start_diag_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,15 +14,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   bool _isSigning = false;
+  bool _showPassword = false;
 
   final FirebaseAuthService _auth = FirebaseAuthService();
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-
-
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void dispose() {
@@ -35,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(""),
+        title: const Text(""),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -44,28 +42,27 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 80),
-
+              const SizedBox(height: 80),
               Image.asset(
                 'assets/user_icon_green.png',
                 width: 120,
                 height: 120,
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 "Inicio de Sesión",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 28,
                 ),
               ),
-              Text(
+              const Text(
                 "Ingresa los datos de tu cuenta",
                 style: TextStyle(
                   fontSize: 22,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 100,
               ),
               TextField(
@@ -78,25 +75,35 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               TextField(
                 controller: _passwordController,
-                obscureText: true,
+                obscureText: !_showPassword, // Para ocultar la contraseña
                 decoration: InputDecoration(
                   labelText: 'Contraseña',
                   hintText: 'Ingrese su contraseña',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _showPassword = !_showPassword;
+                      });
+                    },
+                    icon: Icon(
+                      _showPassword ? Icons.visibility : Icons.visibility_off,
+                    ),
+                  ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               InkWell(
-                onTap: (){
+                onTap: () {
                   _signIn();
                 },
                 child: Container(
@@ -104,42 +111,43 @@ class _LoginPageState extends State<LoginPage> {
                   height: 57,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Color.fromRGBO(7, 185, 159, 1),
+                    color: const Color.fromRGBO(7, 185, 159, 1),
                   ),
                   child: Center(
-                    child:_isSigning ? CircularProgressIndicator(color: Colors.white) : Text(
-                      "Iniciar Sesión",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
+                    child: _isSigning
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                            "Iniciar Sesión",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                          ),
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Text(
+              const Text(
                 "¿Aún no tienes cuenta?",
-                style: TextStyle(
-                  fontSize: 19,
-                  color: Colors.black45
-                ),
+                style: TextStyle(fontSize: 19, color: Colors.black45),
               ),
               GestureDetector(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage()));
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SignUpPage()));
                 },
-                child: Text(
+                child: const Text(
                   "Regístrate",
                   style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                      color: Color.fromRGBO(7, 185, 159, 10)
-                  ),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      color: Color.fromRGBO(7, 185, 159, 10)),
                 ),
               ),
             ],
@@ -150,7 +158,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _signIn() async {
-
     setState(() {
       _isSigning = true;
     });
@@ -158,31 +165,33 @@ class _LoginPageState extends State<LoginPage> {
     try {
       hideCurrentSnackBar(context);
 
-    String email = _emailController.text;
-    String password = _passwordController.text;
+      String email = _emailController.text;
+      String password = _passwordController.text;
 
-    if (email.isEmpty || password.isEmpty) {
-      showSnackBar(context, 'Rellene todos los campos.');
-    } else {
-      if ((!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-          .hasMatch(email))) {
-        showSnackBar(context, 'Correo electrónico inválido.');
+      if (email.isEmpty || password.isEmpty) {
+        showSnackBar(context, 'Rellene todos los campos.');
       } else {
-        User? user = await _auth.signInWithEmailAndPassword(context, email, password);
-        setState(() {
-          _isSigning = false;
-        });
+        if ((!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            .hasMatch(email))) {
+          showSnackBar(context, 'Correo electrónico inválido.');
+        } else {
+          User? user =
+              await _auth.signInWithEmailAndPassword(context, email, password);
+          setState(() {
+            _isSigning = false;
+          });
 
-        if (user!= null) {
-          print("Sesión iniciada corectamente");
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MenuPage()), (route) => false);
-        }
-        else{
-          print("Ha ocurrido un error");
+          if (user != null) {
+            print("Sesión iniciada corectamente");
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const MenuPage()),
+                (route) => false);
+          } else {
+            print("Ha ocurrido un error");
+          }
         }
       }
-    }
-
     } catch (e) {
       print("Excepción: $e");
     } finally {
@@ -190,21 +199,17 @@ class _LoginPageState extends State<LoginPage> {
         _isSigning = false;
       });
     }
-
-
-
-
   }
 
-    void showSnackBar(BuildContext context, String message) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-        ),
-      );
-    }
+  void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
 
-    void hideCurrentSnackBar(BuildContext context) {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    }
+  void hideCurrentSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  }
 }

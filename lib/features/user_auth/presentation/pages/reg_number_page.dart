@@ -118,7 +118,11 @@ class _RegNumberPageState extends State<RegNumberPage> {
                       });
                       if (user != null) {
                         // Usuario actualizado correctamente, navega a la siguiente página
-                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => RegEmergencyPage()), (route) => false);
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegEmergencyPage()),
+                            (route) => false);
                       }
                     },
                     borderRadius: BorderRadius.circular(10),
@@ -127,16 +131,15 @@ class _RegNumberPageState extends State<RegNumberPage> {
                       height: 55,
                       child: Center(
                         child: _isSigningUp
-                            ? CircularProgressIndicator(
-                            color: Colors.white)
+                            ? CircularProgressIndicator(color: Colors.white)
                             : Text(
-                          "Siguiente",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
+                                "Siguiente",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                ),
+                              ),
                       ),
                     ),
                   ),
@@ -163,6 +166,4 @@ class _RegNumberPageState extends State<RegNumberPage> {
   void hideCurrentSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
-
 }
-

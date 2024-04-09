@@ -1,12 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/error_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/home_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/menu_page.dart';
 
 class MorePage extends StatelessWidget {
-  const MorePage ({super.key});
+  const MorePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,15 +14,16 @@ class MorePage extends StatelessWidget {
           const SizedBox(
             height: 50,
           ),
-          const Center(child: Text("Opciones", style: TextStyle(fontSize: 30 , fontWeight: FontWeight.bold))),
-
+          const Center(
+              child: Text("Opciones",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
           const SizedBox(
-          height: 20,
+            height: 20,
           ),
           InkWell(
             onTap: () {
-              Future.delayed(Duration(milliseconds: 100), () {
-              // Logica de botón
+              Future.delayed(const Duration(milliseconds: 100), () {
+                // Logica de botón
               });
             },
             child: Container(
@@ -52,7 +50,7 @@ class MorePage extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              Future.delayed(Duration(milliseconds: 100), () {
+              Future.delayed(const Duration(milliseconds: 100), () {
                 // Logica de botón
               });
             },
@@ -83,7 +81,8 @@ class MorePage extends StatelessWidget {
             child: Container(
               height: 3,
               width: double.infinity,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
                   color: Colors.grey.withOpacity(0.10)),
             ),
           ),
@@ -92,7 +91,7 @@ class MorePage extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              Future.delayed(Duration(milliseconds: 100), () {
+              Future.delayed(const Duration(milliseconds: 100), () {
                 // Logica de botón
               });
             },
@@ -120,7 +119,7 @@ class MorePage extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              Future.delayed(Duration(milliseconds: 100), () {
+              Future.delayed(const Duration(milliseconds: 100), () {
                 // Logica de botón
               });
             },
@@ -151,8 +150,9 @@ class MorePage extends StatelessWidget {
             child: Container(
               height: 3,
               width: double.infinity,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
-              color: Colors.grey.withOpacity(0.10)),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey.withOpacity(0.10)),
             ),
           ),
           const SizedBox(
@@ -160,13 +160,18 @@ class MorePage extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              Future.delayed(Duration(milliseconds: 100), () {
+              Future.delayed(const Duration(milliseconds: 100), () {
                 FirebaseAuth.instance.signOut();
                 showSnackBar(context, 'Sesión cerrada correctamente');
                 // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage()), (Route<dynamic> route) => false);
                 Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                   MaterialPageRoute(
-                    builder: (BuildContext context) {return HomePage();},), (_) => false,);
+                    builder: (BuildContext context) {
+                      return HomePage();
+                    },
+                  ),
+                  (_) => false,
+                );
               });
             },
             child: Container(
@@ -204,4 +209,3 @@ void showSnackBar(BuildContext context, String message) {
     ),
   );
 }
-

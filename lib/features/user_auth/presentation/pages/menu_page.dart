@@ -1,20 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/chats_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/diag_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/home_dashboard_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/home_dashboard_page1.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/home_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/login_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/recent_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/resources_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/search_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/more_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/sign_up_page.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class MenuPage extends StatelessWidget {
-  const MenuPage ({Key? key});
+  const MenuPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,24 +23,24 @@ class MenuPage extends StatelessWidget {
         stateManagement: true,
         hideNavigationBarWhenKeyboardShows: true,
         decoration: NavBarDecoration(
-          borderRadius: BorderRadius.circular(0.0),
+          borderRadius: BorderRadius.circular(10.0),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 0,
               blurRadius: 10,
-              offset: Offset(0, 3),
+              offset: const Offset(0, 3),
             ),
           ],
           colorBehindNavBar: Colors.white,
         ),
         popAllScreensOnTapOfSelectedTab: true,
         popActionScreens: PopActionScreensType.all,
-        itemAnimationProperties: ItemAnimationProperties(
+        itemAnimationProperties: const ItemAnimationProperties(
           duration: Duration(milliseconds: 200),
           curve: Curves.easeInOut,
         ),
-        screenTransitionAnimation: ScreenTransitionAnimation(
+        screenTransitionAnimation: const ScreenTransitionAnimation(
           animateTabTransition: true,
           curve: Curves.easeInOut,
           duration: Duration(milliseconds: 200),
@@ -60,40 +52,40 @@ class MenuPage extends StatelessWidget {
 
   List<Widget> _buildScreens() {
     return [
-      HomeDash1(),
-      RecentPage(),
-      ChatsPage(),
-      ResourcesPage(),
-      MorePage()
+      const HomeDash1(),
+      // RecentPage(),
+      const ChatsPage(),
+      const ResourcesPage(),
+      const MorePage()
     ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.home),
+        icon: const Icon(Icons.home),
         title: "Inicio",
-        activeColorPrimary: Color.fromRGBO(7, 185, 159, 1),
+        activeColorPrimary: const Color.fromRGBO(7, 185, 159, 1),
         inactiveColorPrimary: Colors.grey,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/HomeDash',
-          routes: {'/HomeDash': (context) => HomeDash1()},
+          routes: {'/HomeDash': (context) => const HomeDash1()},
         ),
       ),
+      // PersistentBottomNavBarItem(
+      //   icon: Icon(Icons.pending_actions),
+      //   title: "Historial",
+      //   activeColorPrimary: Color.fromRGBO(7, 185, 159, 1),
+      //   inactiveColorPrimary: Colors.grey,
+      //   routeAndNavigatorSettings: RouteAndNavigatorSettings(
+      //     initialRoute: '/history',
+      //     routes: {'/history': (context) => Container()},
+      //   ),
+      // ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.pending_actions),
-        title: "Historial",
-        activeColorPrimary: Color.fromRGBO(7, 185, 159, 1),
-        inactiveColorPrimary: Colors.grey,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: '/history',
-          routes: {'/history': (context) => Container()},
-        ),
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.chat),
+        icon: const Icon(Icons.chat),
         title: "Chats",
-        activeColorPrimary: Color.fromRGBO(7, 185, 159, 1),
+        activeColorPrimary: const Color.fromRGBO(7, 185, 159, 1),
         inactiveColorPrimary: Colors.grey,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/history',
@@ -101,9 +93,9 @@ class MenuPage extends StatelessWidget {
         ),
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.eco),
+        icon: const Icon(Icons.eco),
         title: "Recursos",
-        activeColorPrimary: Color.fromRGBO(7, 185, 159, 1),
+        activeColorPrimary: const Color.fromRGBO(7, 185, 159, 1),
         inactiveColorPrimary: Colors.grey,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/conversations',
@@ -111,13 +103,13 @@ class MenuPage extends StatelessWidget {
         ),
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.pending),
+        icon: const Icon(Icons.pending),
         title: "Más",
-        activeColorPrimary: Color.fromRGBO(7, 185, 159, 1),
+        activeColorPrimary: const Color.fromRGBO(7, 185, 159, 1),
         inactiveColorPrimary: Colors.grey,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/MorePage',
-          routes: {'/MorePage': (context) => MorePage()},
+          routes: {'/MorePage': (context) => const MorePage()},
         ),
       ),
     ];

@@ -1,9 +1,7 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/home_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/login_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/menu_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/sign_up_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/start_diag_page.dart';
 
 class ErrorEmergencyPage extends StatelessWidget {
   const ErrorEmergencyPage({super.key});
@@ -12,7 +10,7 @@ class ErrorEmergencyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-       // title: Text(""),
+        // title: Text(""),
         centerTitle: true,
       ),
       body: Center(
@@ -41,10 +39,7 @@ class ErrorEmergencyPage extends StatelessWidget {
               ),
               const Text(
                 "Parece que ha habido un problema:(",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const Text(
                 "Inténtalo más tarde.",
@@ -57,13 +52,17 @@ class ErrorEmergencyPage extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Future.delayed(Duration(milliseconds: 100), () {
-                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
+                  Future.delayed(const Duration(milliseconds: 100), () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()),
+                        (route) => false);
                   });
                 },
                 child: Ink(
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(7, 185, 159, 1),
+                    color: const Color.fromRGBO(7, 185, 159, 1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: InkWell(

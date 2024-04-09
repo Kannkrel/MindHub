@@ -1,8 +1,9 @@
+// ignore_for_file: sized_box_for_whitespace, avoid_print, use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:indel_flutter/features/user_auth/firebase_auth_implementation/firebase_auth_services.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/reg_number_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/start_diag_page.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -14,10 +15,10 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   bool _isSigningUp = false;
   final FirebaseAuthService _auth = FirebaseAuthService();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _lastnameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _lastnameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void dispose() {
@@ -32,7 +33,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(""),
+        title: const Text(""),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -41,31 +42,22 @@ class _SignUpPageState extends State<SignUpPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                height: 60,
-              ),
+              const SizedBox(height: 60),
               Image.asset(
                 'assets/register_icon.png',
                 width: 90,
                 height: 90,
               ),
-              SizedBox(height: 10),
-              Text(
+              const SizedBox(height: 10),
+              const Text(
                 "Registro",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 27,
-                ),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
               ),
-              Text(
+              const Text(
                 "Llena los campos necesarios",
-                style: TextStyle(
-                  fontSize: 20,
-                ),
+                style: TextStyle(fontSize: 20),
               ),
-              SizedBox(
-                height: 70,
-              ),
+              const SizedBox(height: 70),
               TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
@@ -76,9 +68,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 15),
               TextField(
                 controller: _lastnameController,
                 decoration: InputDecoration(
@@ -89,9 +79,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 15),
               // Entrada de texto para el correo
               TextField(
                 controller: _emailController,
@@ -103,9 +91,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 15),
               // Entrada de texto para la contraseña
               TextField(
                 controller: _passwordController,
@@ -118,18 +104,18 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               InkWell(
                 onTap: () {
-                  Future.delayed(Duration(milliseconds: 100), () {
+                  Future.delayed(const Duration(milliseconds: 100), () {
                     _signUp();
                   });
                 },
                 child: Ink(
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(7, 185, 159, 1),
+                    color: const Color.fromRGBO(7, 185, 159, 1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: InkWell(
@@ -139,22 +125,22 @@ class _SignUpPageState extends State<SignUpPage> {
                       height: 55,
                       child: Center(
                         child: _isSigningUp
-                            ? CircularProgressIndicator(
-                            color: Colors.white)
+                            ? const CircularProgressIndicator(
+                                color: Colors.white)
                             : const Text(
-                          "Registrarse",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
+                                "Registrarse",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                ),
+                              ),
                       ),
                     ),
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
             ],
@@ -178,7 +164,9 @@ class _SignUpPageState extends State<SignUpPage> {
       String password = _passwordController.text;
 
       // Validar que todos los campos estén llenos
-      if (name.isEmpty || lastname.isEmpty || email.isEmpty ||
+      if (name.isEmpty ||
+          lastname.isEmpty ||
+          email.isEmpty ||
           password.isEmpty) {
         showSnackBar(context, 'Rellene todos los campos.');
       } else {
@@ -210,8 +198,9 @@ class _SignUpPageState extends State<SignUpPage> {
               print("Cuenta creada correctamente");
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => RegNumberPage()),
-                      (route) => false);
+                  MaterialPageRoute(
+                      builder: (context) => const RegNumberPage()),
+                  (route) => false);
             } else {
               print("Ha ocurrido un error.");
             }
@@ -239,6 +228,4 @@ class _SignUpPageState extends State<SignUpPage> {
   void hideCurrentSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
-
 }
-

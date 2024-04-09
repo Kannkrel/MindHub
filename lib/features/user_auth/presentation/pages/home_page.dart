@@ -1,8 +1,11 @@
 // import 'dart:html';
+// ignore_for_file: avoid_print, sized_box_for_whitespace
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/error_emergency.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/error_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/login_page.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/menu_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/sign_up_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -26,9 +29,7 @@ class HomePage extends StatelessWidget {
                 width: 170,
                 height: 170,
               ),
-              const SizedBox(
-                  height: 10
-              ),
+              const SizedBox(height: 10),
               const Text(
                 "MindHub",
                 style: TextStyle(
@@ -47,13 +48,30 @@ class HomePage extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Future.delayed(Duration(milliseconds: 100), () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                  Future.delayed(const Duration(milliseconds: 100), () {
+                    final FirebaseAuth auth = FirebaseAuth.instance;
+
+                    final User? user = auth.currentUser;
+                    if (user != null) {
+                      print('Already logged in: ${user.email}');
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MenuPage()),
+                          (route) => false);
+                    } else {
+                      print('Not logged in');
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()),
+                          (route) => false);
+                    }
                   });
                 },
                 child: Ink(
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(7, 185, 159, 1),
+                    color: const Color.fromRGBO(7, 185, 159, 1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: InkWell(
@@ -80,8 +98,11 @@ class HomePage extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Future.delayed(Duration(milliseconds: 100), () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage()));
+                  Future.delayed(const Duration(milliseconds: 100), () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SignUpPage()));
                   });
                 },
                 child: Container(
@@ -108,8 +129,12 @@ class HomePage extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Future.delayed(Duration(milliseconds: 500), () {
-                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ErrorEmergencyPage()), (route) => false);
+                  Future.delayed(const Duration(milliseconds: 500), () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ErrorEmergencyPage()),
+                        (route) => false);
                     print("Botón 'EMERGENCIA' presionado después del retraso");
                   });
                 },
