@@ -43,66 +43,66 @@ const String url = "assets/user_icon_green.png";
 List<Psychologist> psychologists = [
   Psychologist(
     name: 'John Doe',
-    specialization: 'Cognitive Behavioral Therapy',
+    specialization: 'Terapia de Conducta Cognitiva',
   ),
   Psychologist(
     name: 'Jane Smith',
-    specialization: 'Family Therapy',
+    specialization: 'Terapia Familiar',
   ),
   Psychologist(
     name: 'Alice Johnson',
-    specialization: 'Psychoanalysis',
+    specialization: 'Psicoanalista',
   ),
   Psychologist(
     name: 'Bob Brown',
-    specialization: 'Humanistic Therapy',
+    specialization: 'Terapia Humanista',
   ),
   Psychologist(
     name: 'Eve White',
-    specialization: 'Gestalt Therapy',
+    specialization: 'Terapia Gestalt',
   ),
   Psychologist(
     name: 'Charlie Black',
-    specialization: 'Existential Therapy',
+    specialization: 'Terapia Existencial',
   ),
   Psychologist(
     name: 'Grace Grey',
-    specialization: 'Person-Centered Therapy',
+    specialization: 'Psicoanalista',
   ),
   Psychologist(
     name: 'Harry Green',
-    specialization: 'Solution-Focused Therapy',
+    specialization: 'Psicoanalista',
   ),
   Psychologist(
     name: 'Ivy Blue',
-    specialization: 'Narrative Therapy',
+    specialization: 'Terapia de Conducta Cognitiva',
   ),
   Psychologist(
     name: 'Jack Red',
-    specialization: 'Art Therapy',
+    specialization: 'Terapia Familiar',
   ),
   Psychologist(
     name: 'Kelly Yellow',
-    specialization: 'Music Therapy',
+    specialization: 'Terapia Familiar',
   ),
   Psychologist(
     name: 'Liam Orange',
-    specialization: 'Drama Therapy',
+    specialization: 'Terapia Existencial',
   ),
   Psychologist(
     name: 'Mia Purple',
-    specialization: 'Dance Therapy',
+    specialization: 'Psiquiatra',
   ),
   Psychologist(
     name: 'Noah Pink',
-    specialization: 'Play Therapy',
+    specialization: 'Psiquiatra',
   ),
   Psychologist(
     name: 'Olivia Brown',
-    specialization: 'Animal-Assisted Therapy',
+    specialization: 'Psicólogo General',
   ),
   Psychologist(
     name: 'Oscar White',
-    specialization: 'Ecopsychology',
+    specialization: 'Psicólogo General',
   ),
 ];
