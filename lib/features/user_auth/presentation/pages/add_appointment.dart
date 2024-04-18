@@ -1,12 +1,7 @@
-// ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages, avoid_print
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:indel_flutter/features/user_auth/presentation/colors.dart';
-
-import 'package:intl/intl.dart'; // Importa el paquete intl
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart' show Uuid;
 
@@ -22,6 +17,21 @@ class _AddAppointmentPageState extends State<AddAppointmentPage> {
   DateTime? _selectedDay;
   User? user = FirebaseAuth.instance.currentUser;
   String? selectedValue;
+  List<String> psychologists = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadPsychologists();
+  }
+
+  void loadPsychologists() async {
+    final psychologistsSnapshot = await FirebaseFirestore.instance.collection('psychologists').get();
+    setState(() {
+      psychologists = psychologistsSnapshot.docs.map<String>((doc) => '${doc['nombre']} ${doc['apellido']}' as String).toList();
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,26 +39,16 @@ class _AddAppointmentPageState extends State<AddAppointmentPage> {
         ? DateFormat('EEEE').format(_selectedDay!)
         : 'Dia de la semana';
     String month =
-        _selectedDay != null ? DateFormat('MMMM').format(_selectedDay!) : 'MM';
+    _selectedDay != null ? DateFormat('MMMM').format(_selectedDay!) : 'MM';
     String day =
-        _selectedDay != null ? DateFormat('d').format(_selectedDay!) : 'DD';
+    _selectedDay != null ? DateFormat('d').format(_selectedDay!) : 'DD';
     String year =
-        _selectedDay != null ? DateFormat('y').format(_selectedDay!) : 'YYYY';
+    _selectedDay != null ? DateFormat('y').format(_selectedDay!) : 'YYYY';
     String hour = time?.hour.toString() ?? 'Hora';
     String minute = time?.minute.toString() ?? 'Minuto';
 
     String usuario = user!.uid;
 
-    List<String> reasons = [
-      'Juantio Alcachofas',
-      'Erica Suarez',
-      'Juanito Perez',
-      'German Rodriguez',
-      'Maria Lopez',
-      'Carlos Ramirez',
-      'Israel Montenegro',
-      'Sofia Bentacur',
-    ];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Agendar Cita con el Psicólogo'),
@@ -69,7 +69,7 @@ class _AddAppointmentPageState extends State<AddAppointmentPage> {
                 ),
                 const SizedBox(height: 20.0),
                 Text(
-                  weekDay, // Utiliza DateFormat para obtener el nombre del día de la semana
+                  weekDay,
                   style: const TextStyle(fontSize: 20.0),
                 ),
                 const SizedBox(height: 20.0),
@@ -86,10 +86,10 @@ class _AddAppointmentPageState extends State<AddAppointmentPage> {
                       selectedValue = newValue;
                     });
                   },
-                  items: reasons.map((String reason) {
+                  items: psychologists.map((String psychologist) {
                     return DropdownMenuItem(
-                      value: reason,
-                      child: Text(reason),
+                      value: psychologist,
+                      child: Text(psychologist),
                     );
                   }).toList(),
                 ),
@@ -131,7 +131,7 @@ class _AddAppointmentPageState extends State<AddAppointmentPage> {
                   },
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all<Color>(verdementa),
+                    MaterialStateProperty.all<Color>(Colors.green),
                   ),
                   child: const Text(
                     'Agregar Cita',
@@ -144,7 +144,7 @@ class _AddAppointmentPageState extends State<AddAppointmentPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: verdementa,
+        backgroundColor: Colors.green,
         onPressed: () {
           showTimePicker(
             context: context,
@@ -187,7 +187,7 @@ void sendAppointmentData(context, time, weekDay, day, month, year, hour, minute,
     };
 
     DocumentReference<Map<String, dynamic>> docDataSend =
-        db.collection('appointments').doc(usuario);
+    db.collection('appointments').doc(usuario);
 
     docDataSend
         .set({const Uuid().v4(): appointmentData}, SetOptions(merge: true));

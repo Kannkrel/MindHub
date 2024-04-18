@@ -151,15 +151,24 @@ class _HomeDash1State extends State<HomeDash1> {
     final User? user = auth.currentUser;
     final String uid = user?.uid ?? '';
 
-    final DocumentSnapshot<Map<String, dynamic>> userData =
-        await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+    DocumentSnapshot<Map<String, dynamic>> userData =
+    await FirebaseFirestore.instance.collection('Users').doc(uid).get();
 
     if (userData.exists && userData.data()!.containsKey('nombre')) {
       return userData['nombre'] ?? '';
-    } else {
-      return '';
     }
+
+    // Si el usuario no se encuentra en la colección "Users", buscar en "psychologists"
+    userData = await FirebaseFirestore.instance.collection('psychologists').doc(uid).get();
+
+    if (userData.exists && userData.data()!.containsKey('nombre')) {
+      return userData['nombre'] ?? '';
+    }
+
+    // Si el usuario no se encuentra en ninguna colección, devuelve una cadena vacía
+    return '';
   }
+
 
   Widget _buildFeatureContainer({
     required BuildContext context,

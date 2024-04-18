@@ -80,11 +80,6 @@ class StartDiag extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       Future.delayed(const Duration(milliseconds: 100), () {
-                        FirebaseAuth.instance.signOut();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ErrorPage()));
                       });
                       //  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
                     },

@@ -2,9 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-
 class FirebaseAuthService {
-
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<User?> signUpWithEmailAndPassword(
@@ -14,53 +12,56 @@ class FirebaseAuthService {
       TextEditingController nameController,
       TextEditingController lastnameController,
       TextEditingController emailController,
+      bool isPsychologist,
+      {String? specialization} // Añadir el parámetro specialization
       ) async {
-
     try {
-      UserCredential credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential credential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
-       final uid = credential.user!.uid;
+      final uid = credential.user!.uid;
+      String collectionName = isPsychologist ? 'psychologists' : 'Users';
 
-      await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(uid)
-          .set({
+      Map<String, dynamic> userData = {
         'nombre': nameController.text,
         'apellido': lastnameController.text,
         'email': emailController.text,
+      };
 
-      });
+      if (specialization != null) {
+        userData['especializacion'] = specialization;
+      }
+
+      await FirebaseFirestore.instance.collection(collectionName).doc(uid).set(userData);
+
       return credential.user;
-    }
-    on FirebaseAuthException catch (e) {
-      print("Some error ocurred");
+    } on FirebaseAuthException catch (e) {
+      print("Some error occurred");
 
       if (e.code == "email-already-in-use") {
         showSnackBar(context, 'Este correo ya existe.');
-      }
-      else {
+      } else {
         showSnackBar(context, 'Un error ha ocurrido: ${e.code}');
       }
-
     }
 
     return null;
   }
 
-  Future<User?> signInWithEmailAndPassword(BuildContext context, String email, String password) async {
 
+  Future<User?> signInWithEmailAndPassword(BuildContext context, String email, String password) async {
     try {
       UserCredential credential = await _auth.signInWithEmailAndPassword(email: email, password: password);
 
       return credential.user;
-    }
-    on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       print("Some error ocurred");
 
       if (e.code == 'invalid-credential') {
         showSnackBar(context, 'Correo o contraseña incorrectos.');
-      }
-      else {
+      } else {
         showSnackBar(context, 'Ha ocurrido un error: ${e.code}');
       }
     }
@@ -73,10 +74,18 @@ class FirebaseAuthService {
       User? user = _auth.currentUser;
       if (user != null) {
         String uid = user.uid;
-        await FirebaseFirestore.instance
-            .collection('Users')
-            .doc(uid)
-            .update({'numero': phoneNumber});
+        bool isPsychologist = await _checkIfPsychologist(uid);
+
+        if (isPsychologist) {
+          await FirebaseFirestore.instance.collection('psychologists').doc(uid).update({
+            'numero': phoneNumber,
+          });
+        } else {
+          await FirebaseFirestore.instance.collection('Users').doc(uid).update({
+            'numero': phoneNumber,
+          });
+        }
+
         return user;
       }
     } catch (e) {
@@ -91,49 +100,31 @@ class FirebaseAuthService {
       User? user = _auth.currentUser;
       if (user != null) {
         String uid = user.uid;
-        await FirebaseFirestore.instance
-            .collection('Users')
-            .doc(uid)
-            .update({'numero_emergencia': emergencyNumber});
+        bool isPsychologist = await _checkIfPsychologist(uid);
+
+        if (isPsychologist) {
+          await FirebaseFirestore.instance.collection('psychologists').doc(uid).update({
+            'numero_emergencia': emergencyNumber,
+          });
+        } else {
+          await FirebaseFirestore.instance.collection('Users').doc(uid).update({
+            'numero_emergencia': emergencyNumber,
+          });
+        }
+
         return user;
       }
     } catch (e) {
-      print("Error updating phone number: $e");
-      showSnackBar(context, 'Error al actualizar el número de teléfono.');
+      print("Error updating emergency number: $e");
+      showSnackBar(context, 'Error al actualizar el número de teléfono de emergencia.');
     }
     return null;
   }
 
-  /*
-
-  Future<User?> registerNumber(
-      BuildContext context,
-      TextEditingController numberController,
-      TextEditingController emergencynumberController)
-  async {
-
-    try {
-      UserCredential credential = await _auth.signInWithEmailAndPassword(email: email, password: password);
-
-      await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(uid)
-          .set({
-        'numero': numberController.text,
-        'numero_emergencia': emergencynumberController.text,
-
-      });
-      return credential.user;
-    }
-    on FirebaseAuthException catch (e) {
-      print("Some error ocurred");
-
-    }
-
-    return null;
+  Future<bool> _checkIfPsychologist(String uid) async {
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('psychologists').doc(uid).get();
+    return documentSnapshot.exists;
   }
-
-   */
 
   void showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(

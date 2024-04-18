@@ -61,11 +61,10 @@ class HomePage extends StatelessWidget {
                           (route) => false);
                     } else {
                       print('Not logged in');
-                      Navigator.pushAndRemoveUntil(
+                      Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
-                          (route) => false);
+                              builder: (context) => const LoginPage()));
                     }
                   });
                 },
