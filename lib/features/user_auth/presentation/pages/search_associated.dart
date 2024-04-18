@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'doctor_profile_page.dart';
 
 class SearchAssociatedPage extends StatelessWidget {
   const SearchAssociatedPage({Key? key});
@@ -8,7 +9,15 @@ class SearchAssociatedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Psicólogos Asociados'),
+        title: const Text(
+          'Psicólogos Asociados',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Color.fromRGBO(7, 185, 159, 1)),
+        elevation: 0,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('psychologists').snapshots(),
@@ -20,28 +29,142 @@ class SearchAssociatedPage extends StatelessWidget {
           }
           if (snapshot.hasError) {
             return Center(
-              child: Text('Error: ${snapshot.error}'),
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: TextStyle(color: Colors.red),
+              ),
             );
           }
           final psychologists = snapshot.data!.docs.map((doc) {
             final data = doc.data() as Map<String, dynamic>;
             return Psychologist(
+              id: doc.id, // Añade el id del psicólogo
               name: data['nombre'] ?? '',
-              specialization: data['especializacion'] ?? '', lastName: data['apellido'] ?? '', // Modificación para incluir el apellido
+              lastName: data['apellido'] ?? '', // Incluye el apellido
+              specialization: data['especializacion'] ?? '',
+              description: data['descripcion'] ?? '', // Añade la descripción
+              location: data['ubicacion'] ?? '', // Añade la ubicación
+              price: data['precio'] ?? '', // Añade el precio
+              photoUrl: data['fotoUrl'] ?? '', // Añade la URL de la foto
             );
           }).toList();
           return ListView.builder(
             itemCount: psychologists.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                leading: const CircleAvatar(
-                  backgroundImage: AssetImage('assets/user_icon_green.png'),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 16.0),
+                child: InkWell(
+                  onTap: () {
+                    // Navegar a la vista del perfil del psicólogo cuando se hace clic
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PsychologistProfilePage(
+                          psychologist: psychologists[index], // Pasar el psicólogo seleccionado
+                        ),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundImage: psychologists[index].photoUrl.isNotEmpty
+                                ? NetworkImage(psychologists[index].photoUrl)
+                                : AssetImage('assets/default_avatar.png') as ImageProvider,
+                          ),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Lic. ${psychologists[index].name} ${psychologists[index].lastName}',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.favorite_border),
+                                      color: Color.fromRGBO(7, 185, 159, 1),
+                                      onPressed: () {
+                                        // Lógica para guardar el perfil del psicólogo
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.psychology,
+                                      color: Color.fromRGBO(7, 185, 159, 1),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Text(
+                                      psychologists[index].specialization,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on,
+                                      color: Color.fromRGBO(7, 185, 159, 1),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Text(
+                                      psychologists[index].location,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.attach_money,
+                                      color: Color.fromRGBO(7, 185, 159, 1),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Text(
+                                      psychologists[index].price + ' MXN por sesión.',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-                title: Text('${psychologists[index].name} ${psychologists[index].lastName}'), // Mostrar nombre y apellido
-                subtitle: Text(psychologists[index].specialization),
-                onTap: () {
-                  // Handle psychologist selection
-                },
               );
             },
           );
@@ -52,14 +175,23 @@ class SearchAssociatedPage extends StatelessWidget {
 }
 
 class Psychologist {
+  final String id; // ID del psicólogo
   final String name;
-  final String lastName; // Nuevo campo para el apellido
+  final String lastName;
   final String specialization;
+  final String description; // Descripción del psicólogo
+  final String location; // Ubicación del psicólogo
+  final String price; // Precio del psicólogo
+  final String photoUrl; // URL de la foto del psicólogo
 
   Psychologist({
+    required this.id,
     required this.name,
-    required this.lastName, // Modificación para incluir el apellido
+    required this.lastName,
     required this.specialization,
+    required this.description,
+    required this.location,
+    required this.price,
+    required this.photoUrl,
   });
 }
-

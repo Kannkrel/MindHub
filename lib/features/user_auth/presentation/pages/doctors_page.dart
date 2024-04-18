@@ -19,7 +19,7 @@ class PsychologistsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildPsychologistProfile(BuildContext context, Psychologist psychologist) {
+  Widget _buildPsychologistProfile(BuildContext context, Psychologist1 psychologist) {
     return InkWell(
       onTap: () {
         // Acción al seleccionar un psicólogo
@@ -97,12 +97,12 @@ class PsychologistsPage extends StatelessWidget {
   }
 }
 
-class Psychologist {
+class Psychologist1 {
   final String name;
   final String specialization;
   final bool available;
 
-  Psychologist({
+  Psychologist1({
     required this.name,
     required this.specialization,
     required this.available,
@@ -110,11 +110,11 @@ class Psychologist {
 }
 
 // Ejemplo de lista de psicólogos
-final List<Psychologist> psychologistsList = [
-  Psychologist(name: "Dr. Juan Pérez", specialization: "Psicología Clínica", available: true),
-  Psychologist(name: "Dra. María García", specialization: "Psicología Infantil", available: false),
-  Psychologist(name: "Dr. Carlos López", specialization: "Psicología de Pareja", available: true),
-  Psychologist(name: "Dra. Ana Martínez", specialization: "Psicología Organizacional", available: true),
+final List<Psychologist1> psychologistsList = [
+  Psychologist1(name: "Dr. Juan Pérez", specialization: "Psicología Clínica", available: true),
+  Psychologist1(name: "Dra. María García", specialization: "Psicología Infantil", available: false),
+  Psychologist1(name: "Dr. Carlos López", specialization: "Psicología de Pareja", available: true),
+  Psychologist1(name: "Dra. Ana Martínez", specialization: "Psicología Organizacional", available: true),
 ];
 
 void main() {

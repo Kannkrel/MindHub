@@ -13,8 +13,10 @@ class FirebaseAuthService {
       TextEditingController lastnameController,
       TextEditingController emailController,
       bool isPsychologist,
-      {String? specialization} // Añadir el parámetro specialization
-      ) async {
+      {String? specialization,
+        String? description,
+        String? location,
+        String? price}) async {
     try {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -34,7 +36,22 @@ class FirebaseAuthService {
         userData['especializacion'] = specialization;
       }
 
-      await FirebaseFirestore.instance.collection(collectionName).doc(uid).set(userData);
+      if (description != null) {
+        userData['descripcion'] = description;
+      }
+
+      if (location != null) {
+        userData['ubicacion'] = location;
+      }
+
+      if (price != null) {
+        userData['precio'] = price;
+      }
+
+      await FirebaseFirestore.instance
+          .collection(collectionName)
+          .doc(uid)
+          .set(userData);
 
       return credential.user;
     } on FirebaseAuthException catch (e) {
@@ -122,7 +139,8 @@ class FirebaseAuthService {
   }
 
   Future<bool> _checkIfPsychologist(String uid) async {
-    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('psychologists').doc(uid).get();
+    DocumentSnapshot documentSnapshot =
+    await FirebaseFirestore.instance.collection('psychologists').doc(uid).get();
     return documentSnapshot.exists;
   }
 

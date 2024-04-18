@@ -20,6 +20,9 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _specializationController = TextEditingController(); // Nuevo TextEditingController
+  TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _locationController = TextEditingController();
+  TextEditingController _priceController = TextEditingController();
 
   @override
   void dispose() {
@@ -28,6 +31,9 @@ class _SignUpPageState extends State<SignUpPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _specializationController.dispose(); // Dispose del TextEditingController de la especialización
+    _descriptionController.dispose();
+    _locationController.dispose();
+    _priceController.dispose();
     super.dispose();
   }
 
@@ -128,6 +134,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 onChanged: (newValue) {
                   setState(() {
                     _isAssociateAccount = newValue!;
+                    if (!_isAssociateAccount) {
+                      // Limpiar campos si se desmarca la casilla
+                      _specializationController.clear();
+                      _descriptionController.clear();
+                      _locationController.clear();
+                      _priceController.clear();
+                    }
                   });
                 },
               ),
@@ -138,6 +151,39 @@ class _SignUpPageState extends State<SignUpPage> {
                   decoration: InputDecoration(
                     labelText: 'Especialización',
                     hintText: 'Ingrese su especialización',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15),
+                TextField(
+                  controller: _descriptionController,
+                  decoration: InputDecoration(
+                    labelText: 'Descripción',
+                    hintText: 'Ingrese la descripción',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15),
+                TextField(
+                  controller: _locationController,
+                  decoration: InputDecoration(
+                    labelText: 'Ubicación',
+                    hintText: 'Ingrese la ubicación',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15),
+                TextField(
+                  controller: _priceController,
+                  decoration: InputDecoration(
+                    labelText: 'Precio por sesión',
+                    hintText: 'Ingrese el precio sesión',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
@@ -202,12 +248,20 @@ class _SignUpPageState extends State<SignUpPage> {
       String lastname = _lastnameController.text;
       String email = _emailController.text;
       String password = _passwordController.text;
-      String specialization = _specializationController.text; // Obtener el valor de la especialización
+      String specialization = _specializationController.text;
+      String description = _descriptionController.text;
+      String location = _locationController.text;
+      String price = _priceController.text;
 
       if (name.isEmpty ||
           lastname.isEmpty ||
           email.isEmpty ||
-          password.isEmpty) {
+          password.isEmpty ||
+          (_isAssociateAccount &&
+              (specialization.isEmpty ||
+                  description.isEmpty ||
+                  location.isEmpty ||
+                  price.isEmpty))) {
         showSnackBar(context, 'Rellene todos los campos.');
       } else {
         if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -226,7 +280,10 @@ class _SignUpPageState extends State<SignUpPage> {
               _lastnameController,
               _emailController,
               _isAssociateAccount,
-              specialization: specialization, // Pasar la especialización al método de registro
+              specialization: specialization,
+              description: description,
+              location: location,
+              price: price,
             );
 
             setState(() {
