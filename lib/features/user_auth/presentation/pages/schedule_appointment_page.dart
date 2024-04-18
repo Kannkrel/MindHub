@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class ScheduleAppointmentPage extends StatefulWidget {
   final String psychologistName;
 
-  const ScheduleAppointmentPage({Key? key, required this.psychologistName}) : super(key: key);
+  const ScheduleAppointmentPage({Key? key, required this.psychologistName})
+      : super(key: key);
 
   @override
-  _ScheduleAppointmentPageState createState() => _ScheduleAppointmentPageState();
+  _ScheduleAppointmentPageState createState() =>
+      _ScheduleAppointmentPageState();
 }
 
 class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
@@ -63,7 +65,7 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
               ElevatedButton(
                 onPressed: () => _selectDate(context),
                 style: ElevatedButton.styleFrom(
-                  primary: Color.fromRGBO(7, 185, 159, 1),
+                  backgroundColor: Color.fromRGBO(7, 185, 159, 1),
                   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                   textStyle: TextStyle(fontSize: 20),
                 ),
@@ -73,7 +75,7 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
               ElevatedButton(
                 onPressed: () => _selectTime(context),
                 style: ElevatedButton.styleFrom(
-                  primary: Color.fromRGBO(7, 185, 159, 1),
+                  backgroundColor: Color.fromRGBO(7, 185, 159, 1),
                   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                   textStyle: TextStyle(fontSize: 20),
                 ),
