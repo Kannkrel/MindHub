@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/finish_account_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/home_page/home_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/menu_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/reg_emergency_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/start_diag_page.dart';
-
-import '../../user_auth/presentation/pages/reg_number_page.dart';
 
 class SplashScreen extends StatefulWidget {
   final Widget? child;
@@ -19,10 +13,10 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 0), () {
+    Future.delayed(const Duration(seconds: 0), () {
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => const HomePage()),
           (route) => false);
     });
     super.initState();
@@ -40,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
               width: 150,
               height: 150,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             const Text(
               "MindHub",
               style: TextStyle(
@@ -64,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 5,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(1),
-                  color: Color.fromRGBO(7, 185, 159, 1),
+                  color: const Color.fromRGBO(7, 185, 159, 1),
                 ),
               ),
             ),
