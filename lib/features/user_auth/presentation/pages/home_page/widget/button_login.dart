@@ -1,25 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/login_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/menu_page.dart';
+import 'package:indel_flutter/features/user_auth/function/function_firebase.dart';
+import 'package:indel_flutter/features/user_auth/function/function_home_page.dart';
 
 Widget buttonLogin(BuildContext context) {
   return InkWell(
     onTap: () {
       Future.delayed(const Duration(milliseconds: 100), () {
-        final FirebaseAuth auth = FirebaseAuth.instance;
-
-        final User? user = auth.currentUser;
-        if (user != null) {
-          print('Already logged in: ${user.email}');
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const MenuPage()),
-              (route) => false);
+        if (FunctionFirebase.user != null) {
+          FunctionHomePage.navigateToHomePage(context);
         } else {
-          print('Not logged in');
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const LoginPage()));
+          FunctionHomePage.navigateToLoginPage(context);
         }
       });
     },

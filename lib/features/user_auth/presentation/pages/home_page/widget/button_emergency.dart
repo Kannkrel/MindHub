@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/error_emergency.dart';
+import 'package:indel_flutter/features/user_auth/function/function_home_page.dart';
 
 Widget buttonEmergency(BuildContext context) {
   return InkWell(
     onTap: () {
-      Future.delayed(const Duration(milliseconds: 500), () {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const ErrorEmergencyPage()),
-            (route) => false);
-        print("Botón 'EMERGENCIA' presionado después del retraso");
-      });
+      FunctionHomePage.navigateToEmergency(context);
     },
     child: Container(
       width: double.infinity,

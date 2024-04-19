@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/sign_up_page.dart';
+import 'package:indel_flutter/features/user_auth/function/function_home_page.dart';
 
 Widget buttonRegiester(BuildContext context) {
   return InkWell(
     onTap: () {
-      Future.delayed(const Duration(milliseconds: 100), () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const SignUpPage()));
-      });
+      FunctionHomePage.navigateToSignUpPage(context);
     },
     child: Container(
       width: double.infinity,
