@@ -42,28 +42,25 @@ class _NextAppointmentPageState extends State<NextAppointmentPage> {
 
           if (!snapshot.hasData || !snapshot.data!.exists) {
             return Center(
-              child: Text('No data found'),
+              child: Text('No se encontraron datos'),
             );
           }
 
           final data = snapshot.data!.data() as Map<String, dynamic>;
-          final appointmentDays = data.values.toList();
+          final List<dynamic> appointmentDays = data.values.toList();
 
           return ListView.builder(
             itemCount: appointmentDays.length,
             itemBuilder: (context, index) {
-              final day = appointmentDays[index]['day'];
-              final hour = appointmentDays[index]['hour'];
-              final minute = appointmentDays[index]['minute'];
-              final weekDay = appointmentDays[index]['weekDay'];
-              final month = appointmentDays[index]['month'];
-              final year = appointmentDays[index]['year'];
-              final name = appointmentDays[index]['namePsicologo'];
+              final name = (appointmentDays[index]['psychologistName']);
+              final lastname = appointmentDays[index]['psychologistlastName'];
+              final date = appointmentDays[index]['date'];
+              final sessionType = appointmentDays[index]['sessionType'];
+              final time = appointmentDays[index]['time'];
 
               return ListTile(
-                title: Text('Cita ${index + 1} con $name'),
-                subtitle: Text(
-                    'Fecha: $year/$month/$day- $weekDay - Hora: $hour:$minute'),
+                title: Text('Cita ${index + 1} con $name $lastname'),
+                subtitle: Text('Fecha: $date - $sessionType - Hora: $time'),
               );
             },
           );

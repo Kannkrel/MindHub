@@ -90,7 +90,7 @@ class _HomeDash1State extends State<HomeDash1> {
                       color: const Color.fromRGBO(7, 185, 159, 1),
                       icon: Icons.calendar_month,
                       title: "Próxima sesion",
-                      navigatorTo: Future.value(const NextAppointmentPage()),
+                      navigatorTo: Future.value(NextAppointmentPage()),
                     ),
                     _buildFeatureContainer(
                       context: context,
@@ -152,14 +152,17 @@ class _HomeDash1State extends State<HomeDash1> {
     final String uid = user?.uid ?? '';
 
     DocumentSnapshot<Map<String, dynamic>> userData =
-    await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+        await FirebaseFirestore.instance.collection('Users').doc(uid).get();
 
     if (userData.exists && userData.data()!.containsKey('nombre')) {
       return userData['nombre'] ?? '';
     }
 
     // Si el usuario no se encuentra en la colección "Users", buscar en "psychologists"
-    userData = await FirebaseFirestore.instance.collection('psychologists').doc(uid).get();
+    userData = await FirebaseFirestore.instance
+        .collection('psychologists')
+        .doc(uid)
+        .get();
 
     if (userData.exists && userData.data()!.containsKey('nombre')) {
       return userData['nombre'] ?? '';
@@ -168,7 +171,6 @@ class _HomeDash1State extends State<HomeDash1> {
     // Si el usuario no se encuentra en ninguna colección, devuelve una cadena vacía
     return '';
   }
-
 
   Widget _buildFeatureContainer({
     required BuildContext context,

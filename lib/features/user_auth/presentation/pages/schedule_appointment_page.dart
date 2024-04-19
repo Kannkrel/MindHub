@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:uuid/uuid.dart';
 
 class ScheduleAppointmentPage extends StatefulWidget {
   final String psychologistName;
@@ -201,18 +202,17 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
     );
   }
 
-  void sendAppointmentData(BuildContext context) async {
-    final db = FirebaseFirestore.instance;
+  Future<void> sendAppointmentData(BuildContext context) async {
     final user = FirebaseAuth.instance.currentUser;
-
-    // Obtener el documento del usuario
+    final db = FirebaseFirestore.instance;
     final userDoc = await db.collection('Users').doc(user!.uid).get();
 
-    // Extraer el nombre y el apellido del documento del usuario
     final userName = userDoc['nombre'];
     final userLastName = userDoc['apellido'];
+    final uuid = const Uuid().v4();
 
-    final appointmentData = {
+    hideCurrentSnackBar(context);
+    Map<String, dynamic> appointmentData = {
       'date': _selectedDate.toString(),
       'time': _selectedTime.format(context),
       'psychologistName': widget.psychologistName,
@@ -221,32 +221,62 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
       'userId': user.uid,
       'userName': userName, // Guardar solo el nombre del usuario
       'userLastName': userLastName, // Guardar solo el apellido del usuario
+      'uuid': uuid,
     };
 
-    // Utilizar el UID del usuario como nombre del documento en la colección
-    db
-        .collection('appointments')
-        .doc(user.uid)
-        .set(appointmentData)
-        .then((value) {
-      // Éxito al agregar la cita a la base de datos
-      Navigator.pop(context); // Cerrar la vista de agendar cita
-    }).catchError((error) {
-      // Manejar el error al agregar la cita
-      print("Error al agregar la cita: $error");
-      showSnackBar(context, 'Error al agregar la cita. Inténtalo de nuevo.');
-    });
-  }
+    DocumentReference<Map<String, dynamic>> docDataSend =
+        db.collection('appointments').doc(user.uid);
 
-  void showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
+    docDataSend.set({uuid: appointmentData}, SetOptions(merge: true));
+    Navigator.pop(context);
   }
+}
+// void sendAppointmentData(BuildContext context) async {
+//   final db = FirebaseFirestore.instance;
+//   final user = FirebaseAuth.instance.currentUser;
 
-  void hideCurrentSnackBar(BuildContext context) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-  }
+//   // Obtener el documento del usuario
+//   final userDoc = await db.collection('Users').doc(user!.uid).get();
+
+//   // Extraer el nombre y el apellido del documento del usuario
+//   final userName = userDoc['nombre'];
+//   final userLastName = userDoc['apellido'];
+
+//   final Map<String,dynamic> appointmentData = {
+//     'date': _selectedDate.toString(),
+//     'time': _selectedTime.format(context),
+//     'psychologistName': widget.psychologistName,
+//     'psychologistlastName': widget.psychologistlastName,
+//     'sessionType': _selectedSessionType,
+//     'userId': user.uid,
+//     'userName': userName, // Guardar solo el nombre del usuario
+//     'userLastName': userLastName, // Guardar solo el apellido del usuario
+//   };
+
+//   // Utilizar el UID del usuario como nombre del documento en la colección
+//   db
+//       .collection('appointments')
+//       .doc(user.uid)
+//       .set(appointmentData)
+//       .then((value) {
+//     // Éxito al agregar la cita a la base de datos
+//     Navigator.pop(context); // Cerrar la vista de agendar cita
+//   }
+//   ).catchError((error) {
+//     // Manejar el error al agregar la cita
+//     print("Error al agregar la cita: $error");
+//     showSnackBar(context, 'Error al agregar la cita. Inténtalo de nuevo.');
+//   });
+// }
+
+void showSnackBar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+    ),
+  );
+}
+
+void hideCurrentSnackBar(BuildContext context) {
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
 }
