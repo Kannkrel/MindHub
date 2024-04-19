@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class ScheduleAppointmentPage extends StatefulWidget {
   final String psychologistName;
+  final String psychologistlastName;
 
-  const ScheduleAppointmentPage({Key? key, required this.psychologistName})
+  const ScheduleAppointmentPage({Key? key, required this.psychologistName, required this.psychologistlastName})
       : super(key: key);
 
   @override
@@ -54,7 +58,7 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Agendando cita con: ${widget.psychologistName}'),
+        title: Text('Agendar cita'),
       ),
       body: Center(
         child: Padding(
@@ -62,55 +66,127 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: () => _selectDate(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(7, 185, 159, 1),
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                  textStyle: TextStyle(fontSize: 20),
-                ),
-                child: Text('Seleccionar Fecha'),
-              ),
+              Text('Agendar cita nueva con:', style: TextStyle(fontSize: 20)),
+              Text('${widget.psychologistName}'+' '+'${widget.psychologistlastName}',
+                  style:
+                  TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => _selectTime(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(7, 185, 159, 1),
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                  textStyle: TextStyle(fontSize: 20),
+              TableCalendar(
+                focusedDay: DateTime.now(),
+                firstDay: DateTime.now().subtract(Duration(days: 365)),
+                lastDay: DateTime.now().add(Duration(days: 365)),
+                headerStyle: HeaderStyle(
+                  formatButtonVisible: false,
                 ),
-                child: Text('Seleccionar Hora'),
-              ),
-              SizedBox(height: 20),
-              DropdownButton<String>(
-                value: _selectedSessionType,
-                items: [
-                  DropdownMenuItem(
-                    child: Text('Presencial'),
-                    value: 'Presencial',
+                calendarStyle: CalendarStyle(
+                  selectedDecoration: BoxDecoration(
+                    color: Color.fromRGBO(7, 185, 159, 1),
+                    shape: BoxShape.circle,
                   ),
-                  DropdownMenuItem(
-                    child: Text('En Línea'),
-                    value: 'En Línea',
+                  selectedTextStyle: TextStyle(color: Colors.white),
+                  todayDecoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    shape: BoxShape.circle,
                   ),
-                ],
-                onChanged: (value) {
+                ),
+                selectedDayPredicate: (day) {
+                  return isSameDay(_selectedDate, day);
+                },
+                onDaySelected: (selectedDay, focusedDay) {
                   setState(() {
-                    _selectedSessionType = value!;
+                    _selectedDate = selectedDay;
                   });
                 },
-                hint: Text('Seleccionar Tipo de Sesión'),
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
+              ),
+              SizedBox(height: 20),
+              InkWell(
+                onTap: () => _selectTime(context),
+                borderRadius: BorderRadius.circular(10),
+                child: Ink(
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(7, 185, 159, 1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Container(
+                    width: 150,
+                    height: 55,
+                    child: Center(
+                      child: Text(
+                        "Seleccionar Hora",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
                 ),
-                icon: Icon(Icons.arrow_drop_down),
-                iconSize: 40,
-                iconEnabledColor: Color.fromRGBO(7, 185, 159, 1),
-                isExpanded: true,
-                underline: Container(
-                  height: 2,
-                  color: Color.fromRGBO(7, 185, 159, 1),
+              ),
+              SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: RadioListTile<String>(
+                      title: Text(
+                        'Presencial',
+                        style: TextStyle(fontSize: 18, color: Colors.black),
+                      ),
+                      value: 'Presencial',
+                      groupValue: _selectedSessionType,
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedSessionType = value!;
+                        });
+                      },
+                      dense: true,
+                      activeColor: Color.fromRGBO(7, 185, 159, 1),
+                    ),
+                  ),
+                  Expanded(
+                    child: RadioListTile<String>(
+                      title: Text(
+                        'En Línea',
+                        style: TextStyle(fontSize: 18, color: Colors.black),
+                      ),
+                      value: 'En Línea',
+                      groupValue: _selectedSessionType,
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedSessionType = value!;
+                        });
+                      },
+                      dense: true,
+                      activeColor: Color.fromRGBO(7, 185, 159, 1),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              InkWell(
+                onTap: () {
+                  sendAppointmentData(context);
+                },
+                borderRadius: BorderRadius.circular(10),
+                child: Ink(
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(7, 185, 159, 1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Container(
+                    width: 250,
+                    height: 55,
+                    child: Center(
+                      child: Text(
+                        "Confirmar",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -118,5 +194,51 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
         ),
       ),
     );
+  }
+
+  void sendAppointmentData(BuildContext context) async {
+    final db = FirebaseFirestore.instance;
+    final user = FirebaseAuth.instance.currentUser;
+
+    // Obtener el documento del usuario
+    final userDoc = await db.collection('Users').doc(user!.uid).get();
+
+    // Extraer el nombre y el apellido del documento del usuario
+    final userName = userDoc['nombre'];
+    final userLastName = userDoc['apellido'];
+
+    final appointmentData = {
+      'date': _selectedDate.toString(),
+      'time': _selectedTime.format(context),
+      'psychologistName': widget.psychologistName,
+      'psychologistlastName': widget.psychologistlastName,
+      'sessionType': _selectedSessionType,
+      'userId': user.uid,
+      'userName': userName, // Guardar solo el nombre del usuario
+      'userLastName': userLastName, // Guardar solo el apellido del usuario
+    };
+
+    // Utilizar el UID del usuario como nombre del documento en la colección
+    db.collection('appointments').doc(user.uid).set(appointmentData).then((value) {
+      // Éxito al agregar la cita a la base de datos
+      Navigator.pop(context); // Cerrar la vista de agendar cita
+    }).catchError((error) {
+      // Manejar el error al agregar la cita
+      print("Error al agregar la cita: $error");
+      showSnackBar(context, 'Error al agregar la cita. Inténtalo de nuevo.');
+    });
+  }
+
+
+  void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
+
+  void hideCurrentSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 }

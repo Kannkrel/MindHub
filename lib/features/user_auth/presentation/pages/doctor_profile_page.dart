@@ -1,11 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/schedule_appointment_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/search_associated.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 
-class PsychologistProfilePage extends StatelessWidget {
-  final Psychologist psychologist; // Agrega el psicólogo como argumento al constructor
+import 'chats.dart';
+
+class PsychologistProfilePage extends StatefulWidget {
+  final Psychologist psychologist;
 
   const PsychologistProfilePage({Key? key, required this.psychologist}) : super(key: key);
+
+  @override
+  _PsychologistProfilePageState createState() => _PsychologistProfilePageState();
+}
+
+class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
+  List<Appointment> upcomingAppointments = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUpcomingAppointments();
+  }
+
+  Future<void> fetchUpcomingAppointments() async {
+    final user = FirebaseAuth.instance.currentUser;
+    final appointmentsSnapshot = await FirebaseFirestore.instance
+        .collection('appointments')
+        .where('psychologistName', isEqualTo: widget.psychologist.name)
+        .where('psychologistlastName', isEqualTo: widget.psychologist.lastName)
+        .where('userId', isEqualTo: user!.uid)
+        .get();
+
+    setState(() {
+      upcomingAppointments = appointmentsSnapshot.docs
+          .map((doc) => Appointment.fromSnapshot(doc))
+          .toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +61,7 @@ class PsychologistProfilePage extends StatelessWidget {
             const SizedBox(height: 20),
             Center( // Centra el nombre en la pantalla
               child: Text('Lic. '+
-                  '${psychologist.name} ${psychologist.lastName}',
+                  '${widget.psychologist.name} ${widget.psychologist.lastName}',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),
@@ -41,7 +75,7 @@ class PsychologistProfilePage extends StatelessWidget {
                 ),
                 SizedBox(width: 5),
                 Text(
-                  '${psychologist.specialization}',
+                  '${widget.psychologist.specialization}',
                   style: TextStyle(fontSize: 18),
                 ),
               ],
@@ -56,7 +90,7 @@ class PsychologistProfilePage extends StatelessWidget {
                 ),
                 SizedBox(width: 5),
                 Text(
-                  '${psychologist.description}',
+                  '${widget.psychologist.description}',
                   style: TextStyle(fontSize: 18),
                 ),
               ],
@@ -71,7 +105,7 @@ class PsychologistProfilePage extends StatelessWidget {
                 ),
                 SizedBox(width: 5),
                 Text(
-                  'Ubicación: ${psychologist.location}',
+                  'Ubicación: ${widget.psychologist.location}',
                   style: TextStyle(fontSize: 18),
                 ),
               ],
@@ -86,7 +120,7 @@ class PsychologistProfilePage extends StatelessWidget {
                 ),
                 SizedBox(width: 5),
                 Text(
-                  'Precio por sesión: '+'MXN '+'${psychologist.price}',
+                  'Precio por sesión: '+'MXN '+'${widget.psychologist.price}',
                   style: TextStyle(fontSize: 18),
                 ),
               ],
@@ -126,8 +160,12 @@ class PsychologistProfilePage extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    // Lógica para enviar un mensaje al psicólogo
-                  },
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatScreen(), // Navega a la pantalla de ChatScreen
+                      ),
+                    );                  },
                   child: Ink(
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(7, 185, 159, 1),
@@ -158,7 +196,8 @@ class PsychologistProfilePage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ScheduleAppointmentPage(
-                          psychologistName: psychologist.name,
+                          psychologistName: widget.psychologist.name,
+                          psychologistlastName: widget.psychologist.lastName,
                           ),
                         ),
                       );
@@ -230,14 +269,24 @@ class PsychologistProfilePage extends StatelessWidget {
                         color: Color.fromRGBO(7, 185, 159, 1),
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'No hay citas agendadas por el momento.',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
+                    SizedBox(height: 10),
+                    if (upcomingAppointments.isNotEmpty)
+                      Column(
+                        children: upcomingAppointments.map((appointment) {
+                          return ListTile(
+                            title: Text('Fecha: ${DateFormat.yMMMMEEEEd().format(appointment.date)}'),
+                            subtitle: Text('Hora: ${appointment.time}'),
+                          );
+                        }).toList(),
+                      )
+                    else
+                      Text(
+                        'No hay citas agendadas por el momento.',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),
@@ -245,6 +294,20 @@ class PsychologistProfilePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+class Appointment {
+  final DateTime date;
+  final String time;
+
+  Appointment({required this.date, required this.time});
+
+  factory Appointment.fromSnapshot(DocumentSnapshot snapshot) {
+    final data = snapshot.data() as Map<String, dynamic>;
+    return Appointment(
+      date: (data['date'] as Timestamp).toDate(),
+      time: data['time'] ?? '',
     );
   }
 }
