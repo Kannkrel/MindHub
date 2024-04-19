@@ -10,10 +10,12 @@ import 'chats.dart';
 class PsychologistProfilePage extends StatefulWidget {
   final Psychologist psychologist;
 
-  const PsychologistProfilePage({Key? key, required this.psychologist}) : super(key: key);
+  const PsychologistProfilePage({Key? key, required this.psychologist})
+      : super(key: key);
 
   @override
-  _PsychologistProfilePageState createState() => _PsychologistProfilePageState();
+  _PsychologistProfilePageState createState() =>
+      _PsychologistProfilePageState();
 }
 
 class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
@@ -52,16 +54,18 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
+            const Center(
               child: CircleAvatar(
                 radius: 80,
                 backgroundImage: AssetImage('assets/psychologist_image.jpg'),
               ),
             ),
             const SizedBox(height: 20),
-            Center( // Centra el nombre en la pantalla
-              child: Text('Lic. '+
-                  '${widget.psychologist.name} ${widget.psychologist.lastName}',
+            Center(
+              // Centra el nombre en la pantalla
+              child: Text(
+                'Lic. ' +
+                    '${widget.psychologist.name} ${widget.psychologist.lastName}',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),
@@ -120,7 +124,9 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                 ),
                 SizedBox(width: 5),
                 Text(
-                  'Precio por sesión: '+'MXN '+'${widget.psychologist.price}',
+                  'Precio por sesión: ' +
+                      'MXN ' +
+                      '${widget.psychologist.price}',
                   style: TextStyle(fontSize: 18),
                 ),
               ],
@@ -163,9 +169,11 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ChatScreen(), // Navega a la pantalla de ChatScreen
+                        builder: (context) =>
+                            ChatScreen(), // Navega a la pantalla de ChatScreen
                       ),
-                    );                  },
+                    );
+                  },
                   child: Ink(
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(7, 185, 159, 1),
@@ -174,7 +182,8 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(10),
                       child: Container(
-                        width: 200, // Ancho mayor para el botón "Enviar Mensaje"
+                        width:
+                            200, // Ancho mayor para el botón "Enviar Mensaje"
                         height: 55,
                         child: Center(
                           child: Text(
@@ -198,10 +207,10 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                         builder: (context) => ScheduleAppointmentPage(
                           psychologistName: widget.psychologist.name,
                           psychologistlastName: widget.psychologist.lastName,
-                          ),
                         ),
-                      );
-                    },
+                      ),
+                    );
+                  },
                   child: Ink(
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(7, 185, 159, 1),
@@ -274,7 +283,8 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
                       Column(
                         children: upcomingAppointments.map((appointment) {
                           return ListTile(
-                            title: Text('Fecha: ${DateFormat.yMMMMEEEEd().format(appointment.date)}'),
+                            title: Text(
+                                'Fecha: ${DateFormat.yMMMMEEEEd().format(appointment.date)}'),
                             subtitle: Text('Hora: ${appointment.time}'),
                           );
                         }).toList(),
@@ -297,6 +307,7 @@ class _PsychologistProfilePageState extends State<PsychologistProfilePage> {
     );
   }
 }
+
 class Appointment {
   final DateTime date;
   final String time;
