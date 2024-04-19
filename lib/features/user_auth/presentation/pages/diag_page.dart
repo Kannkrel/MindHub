@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/login_page.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/login_page/login_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/sign_up_page.dart';
 
 class DiagPage extends StatelessWidget {
@@ -48,7 +48,8 @@ class DiagPage extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()));
                 },
                 child: Ink(
                   decoration: BoxDecoration(
@@ -79,7 +80,11 @@ class DiagPage extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage())); // Lógica del botón "Registrarse"
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              SignUpPage())); // Lógica del botón "Registrarse"
                 },
                 child: Container(
                   width: double.infinity,

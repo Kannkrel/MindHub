@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:indel_flutter/features/user_auth/function/function_firebase.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/error_emergency.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/login_page.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/login_page/login_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/menu_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/sign_up_page.dart';
 
