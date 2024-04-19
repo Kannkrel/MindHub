@@ -3,7 +3,7 @@ import 'package:indel_flutter/features/app/splash_screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:indel_flutter/firebase_options.dart';
 
-import 'features/user_auth/presentation/pages/home_page.dart';
+import 'features/user_auth/presentation/pages/home_page/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

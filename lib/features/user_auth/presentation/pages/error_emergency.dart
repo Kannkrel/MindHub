@@ -1,7 +1,7 @@
 // ignore_for_file: sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/home_page.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/home_page/home_page.dart';
 
 class ErrorEmergencyPage extends StatelessWidget {
   const ErrorEmergencyPage({super.key});

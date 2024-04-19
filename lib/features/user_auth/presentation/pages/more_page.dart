@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/home_page.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/home_page/home_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/account_details_page.dart';
 
 class MorePage extends StatelessWidget {
@@ -234,8 +234,10 @@ class MorePage extends StatelessWidget {
 Future<void> _deleteAccount(BuildContext context) async {
   final user = FirebaseAuth.instance.currentUser;
   if (user != null) {
-    final userDoc = FirebaseFirestore.instance.collection('Users').doc(user.uid);
-    final psychologistDoc = FirebaseFirestore.instance.collection('psycologists').doc(user.uid);
+    final userDoc =
+        FirebaseFirestore.instance.collection('Users').doc(user.uid);
+    final psychologistDoc =
+        FirebaseFirestore.instance.collection('psycologists').doc(user.uid);
 
     // Eliminar la cuenta del usuario
     await user.delete();
@@ -256,8 +258,9 @@ Future<void> _deleteAccount(BuildContext context) async {
           return HomePage();
         },
       ),
-          (_) => false,
-    );  }
+      (_) => false,
+    );
+  }
 }
 
 void showSnackBar(BuildContext context, String message) {

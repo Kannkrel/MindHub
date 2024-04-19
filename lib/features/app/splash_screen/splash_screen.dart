@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/finish_account_page.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/home_page.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/home_page/home_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/menu_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/reg_emergency_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/start_diag_page.dart';

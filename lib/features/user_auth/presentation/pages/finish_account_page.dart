@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:indel_flutter/features/user_auth/firebase_auth_implementation/firebase_auth_services.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/home_dashboard_page1.dart';
-import 'package:indel_flutter/features/user_auth/presentation/pages/home_page.dart';
+import 'package:indel_flutter/features/user_auth/presentation/pages/home_page/home_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/reg_emergency_page.dart';
 import 'package:indel_flutter/features/user_auth/presentation/pages/start_diag_page.dart';
 
@@ -80,9 +80,8 @@ class _FinishAccountPageState extends State<FinishAccountPage> {
                   setState(() {
                     Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => StartDiag()),
-                            (route) => false);
+                        MaterialPageRoute(builder: (context) => StartDiag()),
+                        (route) => false);
                   });
                 },
                 child: Container(
@@ -96,13 +95,13 @@ class _FinishAccountPageState extends State<FinishAccountPage> {
                   child: _isSigningUp
                       ? CircularProgressIndicator(color: Colors.white)
                       : Text(
-                    "¡Llévame ahí!",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
+                          "¡Llévame ahí!",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
                 ),
               ),
             ),
