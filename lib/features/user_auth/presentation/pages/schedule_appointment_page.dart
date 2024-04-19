@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, unused_element, avoid_print, use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +9,10 @@ class ScheduleAppointmentPage extends StatefulWidget {
   final String psychologistName;
   final String psychologistlastName;
 
-  const ScheduleAppointmentPage({Key? key, required this.psychologistName, required this.psychologistlastName})
-      : super(key: key);
+  const ScheduleAppointmentPage(
+      {super.key,
+      required this.psychologistName,
+      required this.psychologistlastName});
 
   @override
   _ScheduleAppointmentPageState createState() =>
@@ -33,7 +37,7 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
       context: context,
       initialDate: _selectedDate,
       firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(Duration(days: 365)),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
     );
     if (pickedDate != null && pickedDate != _selectedDate) {
       setState(() {
@@ -58,7 +62,7 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Agendar cita'),
+        title: const Text('Agendar cita'),
       ),
       body: Center(
         child: Padding(
@@ -66,24 +70,25 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Agendar cita nueva con:', style: TextStyle(fontSize: 20)),
-              Text('${widget.psychologistName}'+' '+'${widget.psychologistlastName}',
-                  style:
-                  TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
-              SizedBox(height: 20),
+              const Text('Agendar cita nueva con:',
+                  style: TextStyle(fontSize: 20)),
+              Text('${widget.psychologistName} ${widget.psychologistlastName}',
+                  style: const TextStyle(
+                      fontSize: 40, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 20),
               TableCalendar(
                 focusedDay: DateTime.now(),
-                firstDay: DateTime.now().subtract(Duration(days: 365)),
-                lastDay: DateTime.now().add(Duration(days: 365)),
-                headerStyle: HeaderStyle(
+                firstDay: DateTime.now(),
+                lastDay: DateTime.now().add(const Duration(days: 365)),
+                headerStyle: const HeaderStyle(
                   formatButtonVisible: false,
                 ),
                 calendarStyle: CalendarStyle(
-                  selectedDecoration: BoxDecoration(
+                  selectedDecoration: const BoxDecoration(
                     color: Color.fromRGBO(7, 185, 159, 1),
                     shape: BoxShape.circle,
                   ),
-                  selectedTextStyle: TextStyle(color: Colors.white),
+                  selectedTextStyle: const TextStyle(color: Colors.white),
                   todayDecoration: BoxDecoration(
                     color: Colors.grey[300],
                     shape: BoxShape.circle,
@@ -98,16 +103,16 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
                   });
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               InkWell(
                 onTap: () => _selectTime(context),
                 borderRadius: BorderRadius.circular(10),
                 child: Ink(
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(7, 185, 159, 1),
+                    color: const Color.fromRGBO(7, 185, 159, 1),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Container(
+                  child: const SizedBox(
                     width: 150,
                     height: 55,
                     child: Center(
@@ -123,12 +128,12 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 children: [
                   Expanded(
                     child: RadioListTile<String>(
-                      title: Text(
+                      title: const Text(
                         'Presencial',
                         style: TextStyle(fontSize: 18, color: Colors.black),
                       ),
@@ -140,12 +145,12 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
                         });
                       },
                       dense: true,
-                      activeColor: Color.fromRGBO(7, 185, 159, 1),
+                      activeColor: const Color.fromRGBO(7, 185, 159, 1),
                     ),
                   ),
                   Expanded(
                     child: RadioListTile<String>(
-                      title: Text(
+                      title: const Text(
                         'En Línea',
                         style: TextStyle(fontSize: 18, color: Colors.black),
                       ),
@@ -157,12 +162,12 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
                         });
                       },
                       dense: true,
-                      activeColor: Color.fromRGBO(7, 185, 159, 1),
+                      activeColor: const Color.fromRGBO(7, 185, 159, 1),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               InkWell(
                 onTap: () {
                   sendAppointmentData(context);
@@ -170,10 +175,10 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
                 borderRadius: BorderRadius.circular(10),
                 child: Ink(
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(7, 185, 159, 1),
+                    color: const Color.fromRGBO(7, 185, 159, 1),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Container(
+                  child: const SizedBox(
                     width: 250,
                     height: 55,
                     child: Center(
@@ -219,7 +224,11 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
     };
 
     // Utilizar el UID del usuario como nombre del documento en la colección
-    db.collection('appointments').doc(user.uid).set(appointmentData).then((value) {
+    db
+        .collection('appointments')
+        .doc(user.uid)
+        .set(appointmentData)
+        .then((value) {
       // Éxito al agregar la cita a la base de datos
       Navigator.pop(context); // Cerrar la vista de agendar cita
     }).catchError((error) {
@@ -228,7 +237,6 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
       showSnackBar(context, 'Error al agregar la cita. Inténtalo de nuevo.');
     });
   }
-
 
   void showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
